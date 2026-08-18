@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DC to Store Feedback</title>
+<style>
+  :root {
+    --bg: #f4f6f8;
+    --card: #ffffff;
+    --text: #1f2937;
+    --muted: #6b7280;
+    --border: #d1d5db;
+    --primary: #111827;
+    --primary-hover: #000000;
+    --danger: #b91c1c;
+    --success: #166534;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  .page {
+    min-height: 100vh;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .page.active { display: flex; }
+
+  .card {
+    width: 100%;
+    max-width: 980px;
+    background: var(--card);
+    border-radius: 16px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.08);
+    padding: 32px;
+  }
+
+  .welcome-card {
+    max-width: 760px;
+    text-align: center;
+    padding: 56px 36px;
+  }
+
+  h1 {
+    margin: 0 0 12px;
+    font-size: clamp(30px, 5vw, 46px);
+  }
+
+  .date {
+    font-size: 18px;
+    color: var(--muted);
+    margin-bottom: 34px;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    margin: 0 0 28px;
+  }
+
+  .progress-wrap {
+    margin-bottom: 28px;
+  }
+
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .progress {
+    width: 100%;
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .progress > div {
+    height: 100%;
+    width: 0%;
+    background: var(--primary);
+    transition: width .25s ease;
+  }
+
+  .question {
+    margin-bottom: 30px;
+    padding-bottom: 26px;
+    border-bottom: 1px solid #eceff3;
+  }
+
+  .question:last-of-type {
+    border-bottom: 0;
+  }
+
+  .question-title {
+    font-weight: 700;
+    font-size: 18px;
+    margin-bottom: 10px;
+    line-height: 1.45;
+  }
+
+  .required {
+    color: var(--danger);
+    margin-left: 3px;
+  }
+
+  .hint {
+    color: var(--muted);
+    font-size: 13px;
+    margin: -3px 0 12px;
+  }
+
+  .options {
+    display: grid;
+    gap: 10px;
+  }
+
+  .dc-grid {
+    grid-template-columns: repeat(auto-fit, minmax(86px, 1fr));
+  }
+
+  .business-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  .issue-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 13px 14px;
+    cursor: pointer;
+    background: #fff;
+  }
+
+  .option:hover {
+    border-color: #9ca3af;
+    background: #fafafa;
+  }
+
+  .option input {
+    margin-top: 2px;
+    accent-color: var(--primary);
+  }
+
+  input[type="number"],
+  input[type="text"],
+  input[type="email"],
+  input[type="date"],
+  textarea {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 13px 14px;
+    font-size: 16px;
+    font-family: inherit;
+    outline: none;
+    background: #fff;
+  }
+
+  input:focus,
+  textarea:focus {
+    border-color: #6b7280;
+    box-shadow: 0 0 0 3px rgba(17,24,39,.08);
+  }
+
+  textarea {
+    min-height: 130px;
+    resize: vertical;
+  }
+
+  .file-box {
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    padding: 22px;
+  }
+
+  input[type="file"] {
+    max-width: 100%;
+  }
+
+  .file-list {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 10px;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 28px;
+  }
+
+  button {
+    border: 0;
+    border-radius: 10px;
+    padding: 13px 22px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .primary {
+    background: var(--primary);
+    color: white;
+  }
+
+  .primary:hover { background: var(--primary-hover); }
+
+  .secondary {
+    background: #e5e7eb;
+    color: #111827;
+  }
+
+  .error {
+    color: var(--danger);
+    font-size: 13px;
+    margin-top: 8px;
+    display: none;
+  }
+
+  .review {
+    display: grid;
+    gap: 14px;
+  }
+
+  .review-item {
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 14px;
+  }
+
+  .review-label {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+
+  .review-value {
+    font-weight: 600;
+    white-space: pre-wrap;
+  }
+
+  .success {
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  .success .check {
+    font-size: 58px;
+    margin-bottom: 10px;
+    color: var(--success);
+  }
+
+  @media (max-width: 640px) {
+    .card { padding: 22px; }
+    .actions { flex-direction: column-reverse; }
+    .actions button { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<section class="page active" id="welcomePage">
+  <div class="card welcome-card">
+    <h1>DC to Store Feedback</h1>
+    <div class="date" id="todayDate"></div>
+    <p class="subtitle">Use this form to report feedback or issues from a store load.</p>
+    <button class="primary" type="button" onclick="startForm()">Start Now</button>
+  </div>
+</section>
+
+<section class="page" id="questionPage">
+  <div class="card">
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span>DC to Store Feedback</span>
+        <span>Questions 1–10</span>
+      </div>
+      <div class="progress"><div id="progressBar"></div></div>
+    </div>
+
+    <form id="feedbackForm" novalidate>
+      <div class="question">
+        <div class="question-title">1. Which DC are you?<span class="required">*</span></div>
+        <div class="options dc-grid">
+          <label class="option"><input type="radio" name="dc" value="89">89</label>
+          <label class="option"><input type="radio" name="dc" value="299">299</label>
+          <label class="option"><input type="radio" name="dc" value="399">399</label>
+          <label class="option"><input type="radio" name="dc" value="499">499</label>
+          <label class="option"><input type="radio" name="dc" value="699">699</label>
+          <label class="option"><input type="radio" name="dc" value="799">799</label>
+          <label class="option"><input type="radio" name="dc" value="DSC">DSC</label>
+          <label class="option"><input type="radio" name="dc" value="KSC">KSC</label>
+          <label class="option"><input type="radio" name="dc" value="PSC">PSC</label>
+        </div>
+        <div class="error" id="dcError">Please select a DC.</div>
+      </div>
+
+      <div class="question">
+        <div class="question-title">2. What is your name?<span class="required">*</span></div>
+        <input id="employeeName" name="employeeName" type="text" placeholder="Enter your full name" autocomplete="name" />
+        <div class="error" id="nameError">Please enter your name.</div>
+      </div>
+
+      <div class="question">
+        <div class="question-title">3. What is your email address?<span class="required">*</span></div>
+        <input id="employeeEmail" name="employeeEmail" type="email" placeholder="name@nordstrom.com" autocomplete="email" />
+        <div class="error" id="emailError">Please enter a valid email address.</div>
+      </div>
+
+      <div class="question">
+        <div class="question-title">4. Please select the Business Unit of the store you are reporting.<span class="required">*</span></div>
+        <div class="options business-grid">
+          <label class="option"><input type="radio" name="businessUnit" value="Nordstrom Store">Nordstrom Store</label>
+          <label class="option"><input type="radio" name="businessUnit" value="Nordstrom Rack">Nordstrom Rack</label>
+        </div>
+        <div class="error" id="businessError">Please select a Business Unit.</div>
+      </div>
+
+      <div class="question">
+        <div class="question-title">5. Enter the store number.<span class="required">*</span></div>
+        <div class="hint">Only one store per submission. Number must be between 1–7800.</div>
+        <input id="storeNumber" name="storeNumber" type="number" min="1" max="7800" placeholder="Number must be between 1 ~ 7800" />
+        <div class="error" id="storeError">Enter a store number between 1 and 7800.</div>
+      </div>
+
+      <div class="question">
+        <div class="question-title">6. Please select the date the issue occurred.<span class="required">*</span></div>
+        <div class="hint">Please input date (MM/dd/yyyy).</div>
+        <input id="issueDate" name="issueDate" type="date" />
+        <div class="error" id="dateError">Please select the date the issue occurred.</div>
+      </div>
+
+      <div class="question">
+        <div class="question-title">7. Enter the Trailer Number if available.</div>
+        <input id="trailerNumber" name="trailerNumber" type="text" placeholder="Enter your answer" />
+      </div>
+
+      <div class="question">
+        <div class="question-title">8. What is the Store issue?<span class="required">*</span></div>
+        <div class="hint">Select all that apply.</div>
+        <div class="options issue-grid">
+          <label class="option"><input type="checkbox" name="storeIssue" value="Backhaul Pallets Not Wrapped" data-issue="1">Backhaul Pallets Not Wrapped</label>
+          <label class="option"><input type="checkbox" name="storeIssue" value="Cardboard Not Properly Bundled / Plastic Not in Containers" data-issue="2">Cardboard Not Properly Bundled / Plastic Not in Containers</label>
+          <label class="option"><input type="checkbox" name="storeIssue" value="Hangers / Sensors Not Properly Packed" data-issue="3">Hangers / Sensors Not Properly Packed</label>
+          <label class="option"><input type="checkbox" name="storeIssue" value="Load Not Secure" data-issue="4">Load Not Secure</label>
+          <label class="option"><input type="checkbox" name="storeIssue" value="Unapproved Fixture Movement" data-issue="5">Unapproved Fixture Movement</label>
+          <label class="option"><input type="checkbox" name="storeIssue" value="Unwrapped / Unstacked Empty Pallets" data-issue="6">Unwrapped / Unstacked Empty Pallets</label>
+          <label class="option"><input type="checkbox" name="storeIssue" value="Other" data-issue="7">Other</label>
+        </div>
+        <div class="error" id="issueError">Please select at least one store issue.</div>
+      </div>
+
+      <div class="question">
+        <div class="question-title">9. If you selected "Other" or have additional details, please describe in the comments section below.</div>
+        <textarea id="comments" name="comments" placeholder="Enter additional details"></textarea>
+      </div>
+
+      <div class="question">
+        <div class="question-title">10. Please upload any photo examples from the issue reported above:</div>
+        <div class="hint">Non-anonymous question. You may upload multiple photos.</div>
+        <div class="file-box">
+          <input id="photos" name="photos" type="file" accept="image/*" multiple />
+          <div class="file-list" id="fileList">No photos selected.</div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="secondary" type="button" onclick="goBack()">Back</button>
+        <button class="primary" type="button" onclick="reviewForm()">Review Submission</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<section class="page" id="reviewPage">
+  <div class="card">
+    <h1 style="font-size:30px;">Review Submission</h1>
+    <p class="subtitle">Confirm the information below before submitting.</p>
+    <div class="review" id="reviewContent"></div>
+
+    <div class="actions">
+      <button class="secondary" type="button" onclick="editForm()">Back to Edit</button>
+      <button class="primary" type="button" onclick="submitForm()">Submit</button>
+    </div>
+  </div>
+</section>
+
+<section class="page" id="successPage">
+  <div class="card success">
+    <div class="check">✓</div>
+    <h1 style="font-size:32px;">Feedback Submitted</h1>
+    <p class="subtitle">Your DC to Store Feedback response has been recorded.</p>
+    <button class="primary" type="button" onclick="resetForm()">Submit Another Response</button>
+  </div>
+</section>
+
+<script>
+  const pages = ["welcomePage", "questionPage", "reviewPage", "successPage"];
+  let formStartTime = "";
+
+  function showPage(id) {
+    pages.forEach(pageId => {
+      document.getElementById(pageId).classList.toggle("active", pageId === id);
+    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function formatToday() {
+    const now = new Date();
+    const formatted = now.toLocaleDateString("en-US", {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+      year: "numeric"
+    });
+    document.getElementById("todayDate").textContent = formatted;
+  }
+
+  function startForm() {
+    if (!formStartTime) formStartTime = new Date().toISOString();
+    showPage("questionPage");
+    document.getElementById("progressBar").style.width = "75%";
+  }
+
+  function goBack() {
+    showPage("welcomePage");
+  }
+
+  function clearErrors() {
+    document.querySelectorAll(".error").forEach(el => el.style.display = "none");
+  }
+
+  function validEmail(value) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  }
+
+  function validateForm() {
+    clearErrors();
+    let valid = true;
+
+    const dc = document.querySelector('input[name="dc"]:checked');
+    const name = document.getElementById("employeeName").value.trim();
+    const email = document.getElementById("employeeEmail").value.trim();
+    const business = document.querySelector('input[name="businessUnit"]:checked');
+    const store = document.getElementById("storeNumber");
+    const date = document.getElementById("issueDate");
+    const issues = [...document.querySelectorAll('input[name="storeIssue"]:checked')];
+
+    if (!dc) {
+      document.getElementById("dcError").style.display = "block";
+      valid = false;
+    }
+
+    if (!name) {
+      document.getElementById("nameError").style.display = "block";
+      valid = false;
+    }
+
+    if (!email || !validEmail(email)) {
+      document.getElementById("emailError").style.display = "block";
+      valid = false;
+    }
+
+    if (!business) {
+      document.getElementById("businessError").style.display = "block";
+      valid = false;
+    }
+
+    const storeValue = Number(store.value);
+    if (!store.value || storeValue < 1 || storeValue > 7800) {
+      document.getElementById("storeError").style.display = "block";
+      valid = false;
+    }
+
+    if (!date.value) {
+      document.getElementById("dateError").style.display = "block";
+      valid = false;
+    }
+
+    if (issues.length === 0) {
+      document.getElementById("issueError").style.display = "block";
+      valid = false;
+    }
+
+    if (!valid) {
+      const firstError = [...document.querySelectorAll(".error")].find(e => e.style.display === "block");
+      if (firstError) firstError.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    return valid;
+  }
+
+  function getIssueValue(number) {
+    const selected = document.querySelector(`input[data-issue="${number}"]:checked`);
+    return selected ? selected.value : "";
+  }
+
+  function getFormData() {
+    const photos = [...document.getElementById("photos").files].map(file => file.name);
+
+    return {
+      id: "DCF-" + Date.now(),
+      startTime: formStartTime,
+      completionTime: new Date().toISOString(),
+      email: document.getElementById("employeeEmail").value.trim(),
+      name: document.getElementById("employeeName").value.trim(),
+      dc: document.querySelector('input[name="dc"]:checked')?.value || "",
+      businessUnit: document.querySelector('input[name="businessUnit"]:checked')?.value || "",
+      storeNumber: document.getElementById("storeNumber").value,
+      issueDate: document.getElementById("issueDate").value,
+      trailerNumber: document.getElementById("trailerNumber").value.trim(),
+      issue1: getIssueValue(1),
+      issue2: getIssueValue(2),
+      issue3: getIssueValue(3),
+      issue4: getIssueValue(4),
+      issue5: getIssueValue(5),
+      issue6: getIssueValue(6),
+      issue7: getIssueValue(7),
+      comments: document.getElementById("comments").value.trim(),
+      photoNames: photos,
+      shared: "",
+      priorFiscal2026Issue: ""
+    };
+  }
+
+  function displayDate(dateValue) {
+    if (!dateValue) return "";
+    const [year, month, day] = dateValue.split("-");
+    return `${month}/${day}/${year}`;
+  }
+
+  function escapeHtml(value) {
+    return String(value)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  function reviewForm() {
+    if (!validateForm()) return;
+
+    const data = getFormData();
+    const selectedIssues = [
+      data.issue1, data.issue2, data.issue3, data.issue4,
+      data.issue5, data.issue6, data.issue7
+    ].filter(Boolean);
+
+    const rows = [
+      ["DC", data.dc],
+      ["Name", data.name],
+      ["Email", data.email],
+      ["Business Unit", data.businessUnit],
+      ["Store Number", data.storeNumber],
+      ["Issue Date", displayDate(data.issueDate)],
+      ["Trailer Number", data.trailerNumber || "Not provided"],
+      ["Store Issue(s)", selectedIssues.join("\n")],
+      ["Comments", data.comments || "No additional comments"],
+      ["Photos", data.photoNames.length ? data.photoNames.join("\n") : "No photos uploaded"]
+    ];
+
+    document.getElementById("reviewContent").innerHTML = rows.map(([label, value]) => `
+      <div class="review-item">
+        <div class="review-label">${escapeHtml(label)}</div>
+        <div class="review-value">${escapeHtml(value)}</div>
+      </div>
+    `).join("");
+
+    document.getElementById("progressBar").style.width = "100%";
+    showPage("reviewPage");
+  }
+
+  function editForm() {
+    showPage("questionPage");
+    document.getElementById("progressBar").style.width = "75%";
+  }
+
+  function submitForm() {
+    const data = getFormData();
+
+    // This is where the Power Automate / HTTP POST connection will be added.
+    // Example:
+    // fetch("YOUR_POWER_AUTOMATE_URL", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify(data)
+    // });
+
+    console.log("DC to Store Feedback submission:", data);
+    showPage("successPage");
+  }
+
+  function resetForm() {
+    document.getElementById("feedbackForm").reset();
+    document.getElementById("fileList").textContent = "No photos selected.";
+    formStartTime = "";
+    clearErrors();
+    showPage("welcomePage");
+  }
+
+  document.getElementById("photos").addEventListener("change", function () {
+    const files = [...this.files];
+    document.getElementById("fileList").textContent =
+      files.length === 0
+        ? "No photos selected."
+        : `${files.length} photo${files.length === 1 ? "" : "s"} selected: ${files.map(f => f.name).join(", ")}`;
+  });
+
+  formatToday();
+</script>
+</body>
+</html>

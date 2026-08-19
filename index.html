@@ -517,33 +517,56 @@
     return selected ? selected.value : "";
   }
 
-  function getFormData() {
-    const photos = [...document.getElementById("photos").files].map(file => file.name);
+ async function getFormData() {
+    const photoFiles = [...document.getElementById("photos").files];
+
+    const photos = await Promise.all(
+        photoFiles.map(file => {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+
+                reader.onload = () => {
+                    const result = reader.result;
+                    const base64Content = result.split(",")[1];
+
+                    resolve({
+                        name: file.name,
+                        type: file.type,
+                        content: base64Content
+                    });
+                };
+
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        })
+    );
 
     return {
-      id: "DCF-" + Date.now(),
-      startTime: formStartTime,
-      completionTime: new Date().toISOString(),
-      email: document.getElementById("employeeEmail").value.trim(),
-      name: document.getElementById("employeeName").value.trim(),
-      dc: document.querySelector('input[name="dc"]:checked')?.value || "",
-      businessUnit: document.querySelector('input[name="businessUnit"]:checked')?.value || "",
-      storeNumber: document.getElementById("storeNumber").value,
-      issueDate: document.getElementById("issueDate").value,
-      trailerNumber: document.getElementById("trailerNumber").value.trim(),
-      issue1: getIssueValue(1),
-      issue2: getIssueValue(2),
-      issue3: getIssueValue(3),
-      issue4: getIssueValue(4),
-      issue5: getIssueValue(5),
-      issue6: getIssueValue(6),
-      issue7: getIssueValue(7),
-      comments: document.getElementById("comments").value.trim(),
-      photoNames: photos,
-      shared: "",
-      priorFiscal2026Issue: ""
+        id: "DCF-" + Date.now(),
+        startTime: formStartTime,
+        completionTime: new Date().toISOString(),
+        email: document.getElementById("employeeEmail").value.trim(),
+        name: document.getElementById("employeeName").value.trim(),
+        dc: document.querySelector('input[name="dc"]:checked')?.value || "",
+        businessUnit: document.querySelector('input[name="businessUnit"]:checked')?.value || "",
+        storeNumber: document.getElementById("storeNumber").value,
+        issueDate: document.getElementById("issueDate").value,
+        trailerNumber: document.getElementById("trailerNumber").value.trim(),
+
+        issue1: getIssueValue(1),
+        issue2: getIssueValue(2),
+        issue3: getIssueValue(3),
+        issue4: getIssueValue(4),
+        issue5: getIssueValue(5),
+        issue6: getIssueValue(6),
+        issue7: getIssueValue(7),
+
+        comments: document.getElementById("comments").value.trim(),
+
+        photos: photos
     };
-  }
+}
 
   function displayDate(dateValue) {
     if (!dateValue) return "";

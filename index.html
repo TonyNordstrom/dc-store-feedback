@@ -598,20 +598,30 @@
     document.getElementById("progressBar").style.width = "75%";
   }
 
-  function submitForm() {
+ function submitForm() {
     const data = getFormData();
 
-    // This is where the Power Automate / HTTP POST connection will be added.
-    // Example:
-    // fetch("YOUR_POWER_AUTOMATE_URL", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify(data)
-    // });
+    fetch(https://defaultc291be2656fe41058955fec9bd564d.a1.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/18/workflows/5f906e26e9794354b41c7296bfd3639e/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=6YXreyUyAHE9jjad7QDHs5XK7AbRirnrDONliMhKcC0, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Submission failed");
+        }
 
-    console.log("DC to Store Feedback submission:", data);
-    showPage("successPage");
-  }
+        console.log("DC to Store Feedback submission successful.");
+        showPage("successPage");
+    })
+    .catch(error => {
+        console.error("DC to Store Feedback submission error:", error);
+        alert("There was an error submitting the form. Please try again.");
+    });
+}
+
 
   function resetForm() {
     document.getElementById("feedbackForm").reset();

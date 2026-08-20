@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>DC to Store Feedback</title>
+
 <style>
   :root {
     --bg: #f4f6f8;
@@ -17,7 +18,9 @@
     --success: #166534;
   }
 
-  * { box-sizing: border-box; }
+  * {
+    box-sizing: border-box;
+  }
 
   body {
     margin: 0;
@@ -34,14 +37,16 @@
     padding: 24px;
   }
 
-  .page.active { display: flex; }
+  .page.active {
+    display: flex;
+  }
 
   .card {
     width: 100%;
     max-width: 980px;
     background: var(--card);
     border-radius: 16px;
-    box-shadow: 0 8px 28px rgba(0,0,0,.08);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
     padding: 32px;
   }
 
@@ -91,7 +96,7 @@
     height: 100%;
     width: 0%;
     background: var(--primary);
-    transition: width .25s ease;
+    transition: width 0.25s ease;
   }
 
   .question {
@@ -178,7 +183,7 @@
   input:focus,
   textarea:focus {
     border-color: #6b7280;
-    box-shadow: 0 0 0 3px rgba(17,24,39,.08);
+    box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.08);
   }
 
   textarea {
@@ -196,10 +201,25 @@
     max-width: 100%;
   }
 
+  .file-section {
+    margin-bottom: 20px;
+  }
+
+  .file-section:last-child {
+    margin-bottom: 0;
+  }
+
+  .file-label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
   .file-list {
     color: var(--muted);
     font-size: 13px;
-    margin-top: 10px;
+    margin-top: 14px;
+    line-height: 1.5;
   }
 
   .actions {
@@ -223,7 +243,14 @@
     color: white;
   }
 
-  .primary:hover { background: var(--primary-hover); }
+  .primary:hover {
+    background: var(--primary-hover);
+  }
+
+  .primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
 
   .secondary {
     background: #e5e7eb;
@@ -253,7 +280,7 @@
     color: var(--muted);
     margin-bottom: 5px;
     text-transform: uppercase;
-    letter-spacing: .04em;
+    letter-spacing: 0.04em;
   }
 
   .review-value {
@@ -273,202 +300,498 @@
   }
 
   @media (max-width: 640px) {
-    .card { padding: 22px; }
-    .actions { flex-direction: column-reverse; }
-    .actions button { width: 100%; }
+    .card {
+      padding: 22px;
+    }
+
+    .actions {
+      flex-direction: column-reverse;
+    }
+
+    .actions button {
+      width: 100%;
+    }
   }
 </style>
 </head>
+
 <body>
 
 <section class="page active" id="welcomePage">
   <div class="card welcome-card">
     <h1>DC to Store Feedback</h1>
     <div class="date" id="todayDate"></div>
-    <p class="subtitle">Use this form to report feedback or issues from a store load.</p>
-    <button class="primary" type="button" onclick="startForm()">Start Now</button>
+    <p class="subtitle">
+      Use this form to report feedback or issues from a store load.
+    </p>
+    <button class="primary" type="button" onclick="startForm()">
+      Start Now
+    </button>
   </div>
 </section>
 
 <section class="page" id="questionPage">
   <div class="card">
+
     <div class="progress-wrap">
       <div class="progress-meta">
         <span>DC to Store Feedback</span>
         <span>Questions 1–10</span>
       </div>
-      <div class="progress"><div id="progressBar"></div></div>
+
+      <div class="progress">
+        <div id="progressBar"></div>
+      </div>
     </div>
 
     <form id="feedbackForm" novalidate>
+
       <div class="question">
-        <div class="question-title">1. Which DC are you?<span class="required">*</span></div>
+        <div class="question-title">
+          1. Which DC are you?<span class="required">*</span>
+        </div>
+
         <div class="options dc-grid">
-          <label class="option"><input type="radio" name="dc" value="89">89</label>
-          <label class="option"><input type="radio" name="dc" value="299">299</label>
-          <label class="option"><input type="radio" name="dc" value="399">399</label>
-          <label class="option"><input type="radio" name="dc" value="499">499</label>
-          <label class="option"><input type="radio" name="dc" value="699">699</label>
-          <label class="option"><input type="radio" name="dc" value="799">799</label>
-          <label class="option"><input type="radio" name="dc" value="DSC">DSC</label>
-          <label class="option"><input type="radio" name="dc" value="KSC">KSC</label>
-          <label class="option"><input type="radio" name="dc" value="PSC">PSC</label>
+          <label class="option">
+            <input type="radio" name="dc" value="89">89
+          </label>
+
+          <label class="option">
+            <input type="radio" name="dc" value="299">299
+          </label>
+
+          <label class="option">
+            <input type="radio" name="dc" value="399">399
+          </label>
+
+          <label class="option">
+            <input type="radio" name="dc" value="499">499
+          </label>
+
+          <label class="option">
+            <input type="radio" name="dc" value="699">699
+          </label>
+
+          <label class="option">
+            <input type="radio" name="dc" value="799">799
+          </label>
+
+          <label class="option">
+            <input type="radio" name="dc" value="DSC">DSC
+          </label>
+
+          <label class="option">
+            <input type="radio" name="dc" value="KSC">KSC
+          </label>
+
+          <label class="option">
+            <input type="radio" name="dc" value="PSC">PSC
+          </label>
         </div>
-        <div class="error" id="dcError">Please select a DC.</div>
+
+        <div class="error" id="dcError">
+          Please select a DC.
+        </div>
       </div>
 
       <div class="question">
-        <div class="question-title">2. What is your name?<span class="required">*</span></div>
-        <input id="employeeName" name="employeeName" type="text" placeholder="Enter your full name" autocomplete="name" />
-        <div class="error" id="nameError">Please enter your name.</div>
+        <div class="question-title">
+          2. What is your name?<span class="required">*</span>
+        </div>
+
+        <input
+          id="employeeName"
+          name="employeeName"
+          type="text"
+          placeholder="Enter your full name"
+          autocomplete="name"
+        />
+
+        <div class="error" id="nameError">
+          Please enter your name.
+        </div>
       </div>
 
       <div class="question">
-        <div class="question-title">3. What is your email address?<span class="required">*</span></div>
-        <input id="employeeEmail" name="employeeEmail" type="email" placeholder="name@nordstrom.com" autocomplete="email" />
-        <div class="error" id="emailError">Please enter a valid email address.</div>
+        <div class="question-title">
+          3. What is your email address?<span class="required">*</span>
+        </div>
+
+        <input
+          id="employeeEmail"
+          name="employeeEmail"
+          type="email"
+          placeholder="name@nordstrom.com"
+          autocomplete="email"
+        />
+
+        <div class="error" id="emailError">
+          Please enter a valid email address.
+        </div>
       </div>
 
       <div class="question">
-        <div class="question-title">4. Please select the Business Unit of the store you are reporting.<span class="required">*</span></div>
+        <div class="question-title">
+          4. Please select the Business Unit of the store you are reporting.<span class="required">*</span>
+        </div>
+
         <div class="options business-grid">
-          <label class="option"><input type="radio" name="businessUnit" value="Nordstrom Store">Nordstrom Store</label>
-          <label class="option"><input type="radio" name="businessUnit" value="Nordstrom Rack">Nordstrom Rack</label>
+          <label class="option">
+            <input
+              type="radio"
+              name="businessUnit"
+              value="Nordstrom Store"
+            >
+            Nordstrom Store
+          </label>
+
+          <label class="option">
+            <input
+              type="radio"
+              name="businessUnit"
+              value="Nordstrom Rack"
+            >
+            Nordstrom Rack
+          </label>
         </div>
-        <div class="error" id="businessError">Please select a Business Unit.</div>
+
+        <div class="error" id="businessError">
+          Please select a Business Unit.
+        </div>
       </div>
 
       <div class="question">
-        <div class="question-title">5. Enter the store number.<span class="required">*</span></div>
-        <div class="hint">Only one store per submission. Number must be between 1–7800.</div>
-        <input id="storeNumber" name="storeNumber" type="number" min="1" max="7800" placeholder="Number must be between 1 ~ 7800" />
-        <div class="error" id="storeError">Enter a store number between 1 and 7800.</div>
+        <div class="question-title">
+          5. Enter the store number.<span class="required">*</span>
+        </div>
+
+        <div class="hint">
+          Only one store per submission. Number must be between 1–7800.
+        </div>
+
+        <input
+          id="storeNumber"
+          name="storeNumber"
+          type="number"
+          min="1"
+          max="7800"
+          placeholder="Number must be between 1 ~ 7800"
+        />
+
+        <div class="error" id="storeError">
+          Enter a store number between 1 and 7800.
+        </div>
       </div>
 
       <div class="question">
-        <div class="question-title">6. Please select the date the issue occurred.<span class="required">*</span></div>
-        <div class="hint">Please input date (MM/dd/yyyy).</div>
-        <input id="issueDate" name="issueDate" type="date" />
-        <div class="error" id="dateError">Please select the date the issue occurred.</div>
+        <div class="question-title">
+          6. Please select the date the issue occurred.<span class="required">*</span>
+        </div>
+
+        <div class="hint">
+          Please input date (MM/dd/yyyy).
+        </div>
+
+        <input
+          id="issueDate"
+          name="issueDate"
+          type="date"
+        />
+
+        <div class="error" id="dateError">
+          Please select the date the issue occurred.
+        </div>
       </div>
 
       <div class="question">
-        <div class="question-title">7. Enter the Trailer Number if available.</div>
-        <input id="trailerNumber" name="trailerNumber" type="text" placeholder="Enter your answer" />
+        <div class="question-title">
+          7. Enter the Trailer Number if available.
+        </div>
+
+        <input
+          id="trailerNumber"
+          name="trailerNumber"
+          type="text"
+          placeholder="Enter your answer"
+        />
       </div>
 
       <div class="question">
-        <div class="question-title">8. What is the Store issue?<span class="required">*</span></div>
-        <div class="hint">Select all that apply.</div>
+        <div class="question-title">
+          8. What is the Store issue?<span class="required">*</span>
+        </div>
+
+        <div class="hint">
+          Select all that apply.
+        </div>
+
         <div class="options issue-grid">
-          <label class="option"><input type="checkbox" name="storeIssue" value="Backhaul Pallets Not Wrapped" data-issue="1">Backhaul Pallets Not Wrapped</label>
-          <label class="option"><input type="checkbox" name="storeIssue" value="Cardboard Not Properly Bundled / Plastic Not in Containers" data-issue="2">Cardboard Not Properly Bundled / Plastic Not in Containers</label>
-          <label class="option"><input type="checkbox" name="storeIssue" value="Hangers / Sensors Not Properly Packed" data-issue="3">Hangers / Sensors Not Properly Packed</label>
-          <label class="option"><input type="checkbox" name="storeIssue" value="Load Not Secure" data-issue="4">Load Not Secure</label>
-          <label class="option"><input type="checkbox" name="storeIssue" value="Unapproved Fixture Movement" data-issue="5">Unapproved Fixture Movement</label>
-          <label class="option"><input type="checkbox" name="storeIssue" value="Unwrapped / Unstacked Empty Pallets" data-issue="6">Unwrapped / Unstacked Empty Pallets</label>
-          <label class="option"><input type="checkbox" name="storeIssue" value="Other" data-issue="7">Other</label>
+
+          <label class="option">
+            <input
+              type="checkbox"
+              name="storeIssue"
+              value="Backhaul Pallets Not Wrapped"
+              data-issue="1"
+            >
+            Backhaul Pallets Not Wrapped
+          </label>
+
+          <label class="option">
+            <input
+              type="checkbox"
+              name="storeIssue"
+              value="Cardboard Not Properly Bundled / Plastic Not in Containers"
+              data-issue="2"
+            >
+            Cardboard Not Properly Bundled / Plastic Not in Containers
+          </label>
+
+          <label class="option">
+            <input
+              type="checkbox"
+              name="storeIssue"
+              value="Hangers / Sensors Not Properly Packed"
+              data-issue="3"
+            >
+            Hangers / Sensors Not Properly Packed
+          </label>
+
+          <label class="option">
+            <input
+              type="checkbox"
+              name="storeIssue"
+              value="Load Not Secure"
+              data-issue="4"
+            >
+            Load Not Secure
+          </label>
+
+          <label class="option">
+            <input
+              type="checkbox"
+              name="storeIssue"
+              value="Unapproved Fixture Movement"
+              data-issue="5"
+            >
+            Unapproved Fixture Movement
+          </label>
+
+          <label class="option">
+            <input
+              type="checkbox"
+              name="storeIssue"
+              value="Unwrapped / Unstacked Empty Pallets"
+              data-issue="6"
+            >
+            Unwrapped / Unstacked Empty Pallets
+          </label>
+
+          <label class="option">
+            <input
+              type="checkbox"
+              name="storeIssue"
+              value="Other"
+              data-issue="7"
+            >
+            Other
+          </label>
+
         </div>
-        <div class="error" id="issueError">Please select at least one store issue.</div>
+
+        <div class="error" id="issueError">
+          Please select at least one store issue.
+        </div>
       </div>
 
       <div class="question">
-        <div class="question-title">9. If you selected "Other" or have additional details, please describe in the comments section below.</div>
-        <textarea id="comments" name="comments" placeholder="Enter additional details"></textarea>
+        <div class="question-title">
+          9. If you selected "Other" or have additional details, please describe in the comments section below.
+        </div>
+
+        <textarea
+          id="comments"
+          name="comments"
+          placeholder="Enter additional details"
+        ></textarea>
       </div>
 
       <div class="question">
-        <div class="question-title">10. Please upload any photo examples from the issue reported above:</div>
-        <div class="hint">Non-anonymous question. You may upload multiple photos.</div>
+        <div class="question-title">
+          10. Please upload any photo examples from the issue reported above:
+        </div>
+
+        <div class="hint">
+          You can take a new photo or upload existing photos.
+        </div>
+
         <div class="file-box">
 
-    <div style="margin-bottom: 18px;">
-        <strong>Take a Photo</strong>
-        <div class="hint">Use your device camera to take a photo of the issue.</div>
+          <div class="file-section">
+            <span class="file-label">Take a Photo</span>
 
-        <input
-            id="cameraPhoto"
-            name="cameraPhoto"
-            type="file"
-            accept="image/*"
-            capture="environment"
-        />
-    </div>
+            <div class="hint">
+              On a supported mobile device, this will request the rear camera.
+            </div>
 
-    <div>
-        <strong>Upload Photos</strong>
-        <div class="hint">Select one or more existing photos from your device.</div>
+            <input
+              id="cameraPhoto"
+              name="cameraPhoto"
+              type="file"
+              accept="image/*"
+              capture="environment"
+            />
+          </div>
 
-        <input
-            id="photos"
-            name="photos"
-            type="file"
-            accept="image/*"
-            multiple
-        />
-    </div>
+          <div class="file-section">
+            <span class="file-label">Upload Photos</span>
 
-    <div class="file-list" id="fileList">
-        No photos selected.
-    </div>
+            <div class="hint">
+              Select one or more existing photos from your device.
+            </div>
 
-</div>
+            <input
+              id="photos"
+              name="photos"
+              type="file"
+              accept="image/*"
+              multiple
+            />
+          </div>
+
+          <div class="file-list" id="fileList">
+            No photos selected.
+          </div>
+
+        </div>
+      </div>
 
       <div class="actions">
-        <button class="secondary" type="button" onclick="goBack()">Back</button>
-        <button class="primary" type="button" onclick="reviewForm()">Review Submission</button>
+        <button
+          class="secondary"
+          type="button"
+          onclick="goBack()"
+        >
+          Back
+        </button>
+
+        <button
+          class="primary"
+          type="button"
+          onclick="reviewForm()"
+        >
+          Review Submission
+        </button>
       </div>
+
     </form>
   </div>
 </section>
 
 <section class="page" id="reviewPage">
   <div class="card">
-    <h1 style="font-size:30px;">Review Submission</h1>
-    <p class="subtitle">Confirm the information below before submitting.</p>
+
+    <h1 style="font-size:30px;">
+      Review Submission
+    </h1>
+
+    <p class="subtitle">
+      Confirm the information below before submitting.
+    </p>
+
     <div class="review" id="reviewContent"></div>
 
     <div class="actions">
-      <button class="secondary" type="button" onclick="editForm()">Back to Edit</button>
-      <button class="primary" type="button" onclick="submitForm()">Submit</button>
+
+      <button
+        class="secondary"
+        type="button"
+        onclick="editForm()"
+      >
+        Back to Edit
+      </button>
+
+      <button
+        class="primary"
+        id="submitButton"
+        type="button"
+        onclick="submitForm()"
+      >
+        Submit
+      </button>
+
     </div>
   </div>
 </section>
 
 <section class="page" id="successPage">
   <div class="card success">
+
     <div class="check">✓</div>
-    <h1 style="font-size:32px;">Feedback Submitted</h1>
-    <p class="subtitle">Your DC to Store Feedback response has been recorded.</p>
-    <button class="primary" type="button" onclick="resetForm()">Submit Another Response</button>
+
+    <h1 style="font-size:32px;">
+      Feedback Submitted
+    </h1>
+
+    <p class="subtitle">
+      Your DC to Store Feedback response has been recorded.
+    </p>
+
+    <button
+      class="primary"
+      type="button"
+      onclick="resetForm()"
+    >
+      Submit Another Response
+    </button>
+
   </div>
 </section>
 
 <script>
-  const pages = ["welcomePage", "questionPage", "reviewPage", "successPage"];
+
+  const pages = [
+    "welcomePage",
+    "questionPage",
+    "reviewPage",
+    "successPage"
+  ];
+
   let formStartTime = "";
 
   function showPage(id) {
     pages.forEach(pageId => {
-      document.getElementById(pageId).classList.toggle("active", pageId === id);
+      document
+        .getElementById(pageId)
+        .classList.toggle("active", pageId === id);
     });
-    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
   }
 
   function formatToday() {
     const now = new Date();
+
     const formatted = now.toLocaleDateString("en-US", {
       weekday: "long",
       month: "long",
       day: "numeric",
       year: "numeric"
     });
+
     document.getElementById("todayDate").textContent = formatted;
   }
 
   function startForm() {
-    if (!formStartTime) formStartTime = new Date().toISOString();
+    if (!formStartTime) {
+      formStartTime = new Date().toISOString();
+    }
+
     showPage("questionPage");
+
     document.getElementById("progressBar").style.width = "75%";
   }
 
@@ -477,7 +800,9 @@
   }
 
   function clearErrors() {
-    document.querySelectorAll(".error").forEach(el => el.style.display = "none");
+    document.querySelectorAll(".error").forEach(el => {
+      el.style.display = "none";
+    });
   }
 
   function validEmail(value) {
@@ -486,15 +811,32 @@
 
   function validateForm() {
     clearErrors();
+
     let valid = true;
 
-    const dc = document.querySelector('input[name="dc"]:checked');
-    const name = document.getElementById("employeeName").value.trim();
-    const email = document.getElementById("employeeEmail").value.trim();
-    const business = document.querySelector('input[name="businessUnit"]:checked');
-    const store = document.getElementById("storeNumber");
-    const date = document.getElementById("issueDate");
-    const issues = [...document.querySelectorAll('input[name="storeIssue"]:checked')];
+    const dc =
+      document.querySelector('input[name="dc"]:checked');
+
+    const name =
+      document.getElementById("employeeName").value.trim();
+
+    const email =
+      document.getElementById("employeeEmail").value.trim();
+
+    const business =
+      document.querySelector('input[name="businessUnit"]:checked');
+
+    const store =
+      document.getElementById("storeNumber");
+
+    const date =
+      document.getElementById("issueDate");
+
+    const issues = [
+      ...document.querySelectorAll(
+        'input[name="storeIssue"]:checked'
+      )
+    ];
 
     if (!dc) {
       document.getElementById("dcError").style.display = "block";
@@ -517,7 +859,12 @@
     }
 
     const storeValue = Number(store.value);
-    if (!store.value || storeValue < 1 || storeValue > 7800) {
+
+    if (
+      !store.value ||
+      storeValue < 1 ||
+      storeValue > 7800
+    ) {
       document.getElementById("storeError").style.display = "block";
       valid = false;
     }
@@ -533,78 +880,159 @@
     }
 
     if (!valid) {
-      const firstError = [...document.querySelectorAll(".error")].find(e => e.style.display === "block");
-      if (firstError) firstError.scrollIntoView({ behavior: "smooth", block: "center" });
+      const firstError = [
+        ...document.querySelectorAll(".error")
+      ].find(el => el.style.display === "block");
+
+      if (firstError) {
+        firstError.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+      }
     }
 
     return valid;
   }
 
   function getIssueValue(number) {
-    const selected = document.querySelector(`input[data-issue="${number}"]:checked`);
+    const selected =
+      document.querySelector(
+        `input[data-issue="${number}"]:checked`
+      );
+
     return selected ? selected.value : "";
   }
 
- async function getFormData() {
-   const cameraFiles = [...document.getElementById("cameraPhoto").files];
-const uploadedFiles = [...document.getElementById("photos").files];
+  async function fileToBase64Object(file) {
+    return new Promise((resolve, reject) => {
 
-const photoFiles = [
-    ...cameraFiles,
-    ...uploadedFiles
-];
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        try {
+          const result = reader.result;
+
+          const commaIndex = result.indexOf(",");
+
+          const base64Content =
+            commaIndex >= 0
+              ? result.substring(commaIndex + 1)
+              : result;
+
+          resolve({
+            name: file.name,
+            type: file.type || "application/octet-stream",
+            content: base64Content
+          });
+
+        } catch (error) {
+          reject(error);
+        }
+      };
+
+      reader.onerror = () => {
+        reject(
+          new Error(
+            `Unable to read file: ${file.name}`
+          )
+        );
+      };
+
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function getFormData() {
+
+    const cameraFiles = [
+      ...document.getElementById("cameraPhoto").files
+    ];
+
+    const uploadedFiles = [
+      ...document.getElementById("photos").files
+    ];
+
+    const photoFiles = [
+      ...cameraFiles,
+      ...uploadedFiles
+    ];
 
     const photos = await Promise.all(
-        photoFiles.map(file => {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-
-                reader.onload = () => {
-                    const result = reader.result;
-                    const base64Content = result.split(",")[1];
-
-                    resolve({
-                        name: file.name,
-                        type: file.type,
-                        content: base64Content
-                    });
-                };
-
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
-            });
-        })
+      photoFiles.map(file => fileToBase64Object(file))
     );
 
     return {
-        id: "DCF-" + Date.now(),
-        startTime: formStartTime,
-        completionTime: new Date().toISOString(),
-        email: document.getElementById("employeeEmail").value.trim(),
-        name: document.getElementById("employeeName").value.trim(),
-        dc: document.querySelector('input[name="dc"]:checked')?.value || "",
-        businessUnit: document.querySelector('input[name="businessUnit"]:checked')?.value || "",
-        storeNumber: document.getElementById("storeNumber").value,
-        issueDate: document.getElementById("issueDate").value,
-        trailerNumber: document.getElementById("trailerNumber").value.trim(),
 
-        issue1: getIssueValue(1),
-        issue2: getIssueValue(2),
-        issue3: getIssueValue(3),
-        issue4: getIssueValue(4),
-        issue5: getIssueValue(5),
-        issue6: getIssueValue(6),
-        issue7: getIssueValue(7),
+      id: "DCF-" + Date.now(),
 
-        comments: document.getElementById("comments").value.trim(),
+      startTime:
+        formStartTime ||
+        new Date().toISOString(),
 
-        photos: photos
+      completionTime:
+        new Date().toISOString(),
+
+      email:
+        document
+          .getElementById("employeeEmail")
+          .value
+          .trim(),
+
+      name:
+        document
+          .getElementById("employeeName")
+          .value
+          .trim(),
+
+      dc:
+        document.querySelector(
+          'input[name="dc"]:checked'
+        )?.value || "",
+
+      businessUnit:
+        document.querySelector(
+          'input[name="businessUnit"]:checked'
+        )?.value || "",
+
+      storeNumber:
+        document.getElementById("storeNumber").value,
+
+      issueDate:
+        document.getElementById("issueDate").value,
+
+      trailerNumber:
+        document
+          .getElementById("trailerNumber")
+          .value
+          .trim(),
+
+      issue1: getIssueValue(1),
+      issue2: getIssueValue(2),
+      issue3: getIssueValue(3),
+      issue4: getIssueValue(4),
+      issue5: getIssueValue(5),
+      issue6: getIssueValue(6),
+      issue7: getIssueValue(7),
+
+      comments:
+        document
+          .getElementById("comments")
+          .value
+          .trim(),
+
+      photos: photos
     };
-}
+  }
 
   function displayDate(dateValue) {
-    if (!dateValue) return "";
-    const [year, month, day] = dateValue.split("-");
+    if (!dateValue) {
+      return "";
+    }
+
+    const [year, month, day] =
+      dateValue.split("-");
+
     return `${month}/${day}/${year}`;
   }
 
@@ -618,11 +1046,16 @@ const photoFiles = [
   }
 
   async function reviewForm() {
-    if (!validateForm()) return;
 
-    const data = await getFormData();
+    if (!validateForm()) {
+      return;
+    }
 
-    const selectedIssues = [
+    try {
+
+      const data = await getFormData();
+
+      const selectedIssues = [
         data.issue1,
         data.issue2,
         data.issue3,
@@ -630,99 +1063,241 @@ const photoFiles = [
         data.issue5,
         data.issue6,
         data.issue7
-    ].filter(Boolean);
+      ].filter(Boolean);
 
-    const photoNames = data.photos.map(photo => photo.name);
+      const photoNames =
+        data.photos.map(photo => photo.name);
 
-    const rows = [
+      const rows = [
+
         ["DC", data.dc],
+
         ["Name", data.name],
+
         ["Email", data.email],
+
         ["Business Unit", data.businessUnit],
+
         ["Store Number", data.storeNumber],
-        ["Issue Date", displayDate(data.issueDate)],
-        ["Trailer Number", data.trailerNumber || "Not provided"],
-        ["Store Issue(s)", selectedIssues.join("\n")],
-        ["Comments", data.comments || "No additional comments"],
-        ["Photos", photoNames.length ? photoNames.join("\n") : "No photos uploaded"]
-    ];
 
-    document.getElementById("reviewContent").innerHTML = rows.map(([label, value]) => `
-        <div class="review-item">
-            <div class="review-label">${escapeHtml(label)}</div>
-            <div class="review-value">${escapeHtml(value)}</div>
-        </div>
-    `).join("");
+        [
+          "Issue Date",
+          displayDate(data.issueDate)
+        ],
 
-    document.getElementById("progressBar").style.width = "100%";
-    showPage("reviewPage");
-}
+        [
+          "Trailer Number",
+          data.trailerNumber || "Not provided"
+        ],
 
-  function editForm() {
-    showPage("questionPage");
-    document.getElementById("progressBar").style.width = "75%";
+        [
+          "Store Issue(s)",
+          selectedIssues.join("\n")
+        ],
+
+        [
+          "Comments",
+          data.comments ||
+          "No additional comments"
+        ],
+
+        [
+          "Photos",
+          photoNames.length
+            ? photoNames.join("\n")
+            : "No photos uploaded"
+        ]
+
+      ];
+
+      document.getElementById(
+        "reviewContent"
+      ).innerHTML = rows
+        .map(([label, value]) => `
+          <div class="review-item">
+            <div class="review-label">
+              ${escapeHtml(label)}
+            </div>
+
+            <div class="review-value">
+              ${escapeHtml(value)}
+            </div>
+          </div>
+        `)
+        .join("");
+
+      document.getElementById(
+        "progressBar"
+      ).style.width = "100%";
+
+      showPage("reviewPage");
+
+    } catch (error) {
+
+      console.error(
+        "Error preparing review:",
+        error
+      );
+
+      alert(
+        "There was an error preparing the submission for review. Please try again."
+      );
+    }
   }
 
-async function submitForm() {
-    const data = await getFormData();
+  function editForm() {
 
-    fetch("https://defaultc291be2656fe41058955fec9bd564d.a1.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/18/workflows/5f906e26e9794354b41c7296bfd3639e/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=6YXreyUyAHE9jjad7QDHs5XK7AbRirnrDONliMhKcC0", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error("Submission failed");
+    showPage("questionPage");
+
+    document.getElementById(
+      "progressBar"
+    ).style.width = "75%";
+  }
+
+  async function submitForm() {
+
+    const submitButton =
+      document.getElementById("submitButton");
+
+    submitButton.disabled = true;
+    submitButton.textContent = "Submitting...";
+
+    try {
+
+      const data =
+        await getFormData();
+
+      const response =
+        await fetch(
+          "PASTE_YOUR_POWER_AUTOMATE_HTTP_URL_HERE",
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify(data)
+          }
+        );
+
+      if (!response.ok) {
+
+        let errorText = "";
+
+        try {
+          errorText = await response.text();
+        } catch (_) {
+          errorText = "";
         }
 
-        console.log("DC to Store Feedback submission successful.");
-        showPage("successPage");
-    })
-    .catch(error => {
-        console.error("DC to Store Feedback submission error:", error);
-        alert("There was an error submitting the form. Please try again.");
-    });
-}
+        throw new Error(
+          `Submission failed. HTTP ${response.status} ${errorText}`
+        );
+      }
 
+      console.log(
+        "DC to Store Feedback submission successful."
+      );
+
+      showPage("successPage");
+
+    } catch (error) {
+
+      console.error(
+        "DC to Store Feedback submission error:",
+        error
+      );
+
+      alert(
+        "There was an error submitting the form. Please try again."
+      );
+
+    } finally {
+
+      submitButton.disabled = false;
+      submitButton.textContent = "Submit";
+    }
+  }
 
   function resetForm() {
-    document.getElementById("feedbackForm").reset();
-    document.getElementById("fileList").textContent = "No photos selected.";
+
+    document
+      .getElementById("feedbackForm")
+      .reset();
+
+    document.getElementById(
+      "fileList"
+    ).textContent =
+      "No photos selected.";
+
+    document.getElementById(
+      "reviewContent"
+    ).innerHTML = "";
+
+    document.getElementById(
+      "progressBar"
+    ).style.width = "0%";
+
     formStartTime = "";
+
     clearErrors();
+
     showPage("welcomePage");
   }
 
   function updatePhotoList() {
-    const cameraFiles = [...document.getElementById("cameraPhoto").files];
-    const uploadedFiles = [...document.getElementById("photos").files];
 
-    const allFiles = [
-        ...cameraFiles,
-        ...uploadedFiles
+    const cameraFiles = [
+      ...document
+        .getElementById("cameraPhoto")
+        .files
     ];
 
-    document.getElementById("fileList").textContent =
-        allFiles.length === 0
-            ? "No photos selected."
-            : `${allFiles.length} photo${allFiles.length === 1 ? "" : "s"} selected: ${
-                allFiles.map(file => file.name).join(", ")
-            }`;
-}
+    const uploadedFiles = [
+      ...document
+        .getElementById("photos")
+        .files
+    ];
 
-document
+    const allFiles = [
+      ...cameraFiles,
+      ...uploadedFiles
+    ];
+
+    document.getElementById(
+      "fileList"
+    ).textContent =
+      allFiles.length === 0
+        ? "No photos selected."
+        : `${allFiles.length} photo${
+            allFiles.length === 1
+              ? ""
+              : "s"
+          } selected: ${
+            allFiles
+              .map(file => file.name)
+              .join(", ")
+          }`;
+  }
+
+  document
     .getElementById("cameraPhoto")
-    .addEventListener("change", updatePhotoList);
+    .addEventListener(
+      "change",
+      updatePhotoList
+    );
 
-document
+  document
     .getElementById("photos")
-    .addEventListener("change", updatePhotoList);
-  });
+    .addEventListener(
+      "change",
+      updatePhotoList
+    );
 
   formatToday();
+
 </script>
+
 </body>
 </html>

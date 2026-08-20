@@ -1210,8 +1210,9 @@
       );
 
       alert(
-        "There was an error submitting the form. Please try again."
-      );
+  "Submission error: " +
+  (error && error.message ? error.message : String(error))
+);
 
     } finally {
 

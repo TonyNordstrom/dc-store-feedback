@@ -381,10 +381,38 @@
         <div class="question-title">10. Please upload any photo examples from the issue reported above:</div>
         <div class="hint">Non-anonymous question. You may upload multiple photos.</div>
         <div class="file-box">
-          <input id="photos" name="photos" type="file" accept="image/*" multiple />
-          <div class="file-list" id="fileList">No photos selected.</div>
-        </div>
-      </div>
+
+    <div style="margin-bottom: 18px;">
+        <strong>Take a Photo</strong>
+        <div class="hint">Use your device camera to take a photo of the issue.</div>
+
+        <input
+            id="cameraPhoto"
+            name="cameraPhoto"
+            type="file"
+            accept="image/*"
+            capture="environment"
+        />
+    </div>
+
+    <div>
+        <strong>Upload Photos</strong>
+        <div class="hint">Select one or more existing photos from your device.</div>
+
+        <input
+            id="photos"
+            name="photos"
+            type="file"
+            accept="image/*"
+            multiple
+        />
+    </div>
+
+    <div class="file-list" id="fileList">
+        No photos selected.
+    </div>
+
+</div>
 
       <div class="actions">
         <button class="secondary" type="button" onclick="goBack()">Back</button>
@@ -518,7 +546,13 @@
   }
 
  async function getFormData() {
-    const photoFiles = [...document.getElementById("photos").files];
+   const cameraFiles = [...document.getElementById("cameraPhoto").files];
+const uploadedFiles = [...document.getElementById("photos").files];
+
+const photoFiles = [
+    ...cameraFiles,
+    ...uploadedFiles
+];
 
     const photos = await Promise.all(
         photoFiles.map(file => {
@@ -583,38 +617,46 @@
       .replaceAll("'", "&#039;");
   }
 
-  function reviewForm() {
+  async function reviewForm() {
     if (!validateForm()) return;
 
-    const data = getFormData();
+    const data = await getFormData();
+
     const selectedIssues = [
-      data.issue1, data.issue2, data.issue3, data.issue4,
-      data.issue5, data.issue6, data.issue7
+        data.issue1,
+        data.issue2,
+        data.issue3,
+        data.issue4,
+        data.issue5,
+        data.issue6,
+        data.issue7
     ].filter(Boolean);
 
+    const photoNames = data.photos.map(photo => photo.name);
+
     const rows = [
-      ["DC", data.dc],
-      ["Name", data.name],
-      ["Email", data.email],
-      ["Business Unit", data.businessUnit],
-      ["Store Number", data.storeNumber],
-      ["Issue Date", displayDate(data.issueDate)],
-      ["Trailer Number", data.trailerNumber || "Not provided"],
-      ["Store Issue(s)", selectedIssues.join("\n")],
-      ["Comments", data.comments || "No additional comments"],
-      ["Photos", data.photoNames.length ? data.photoNames.join("\n") : "No photos uploaded"]
+        ["DC", data.dc],
+        ["Name", data.name],
+        ["Email", data.email],
+        ["Business Unit", data.businessUnit],
+        ["Store Number", data.storeNumber],
+        ["Issue Date", displayDate(data.issueDate)],
+        ["Trailer Number", data.trailerNumber || "Not provided"],
+        ["Store Issue(s)", selectedIssues.join("\n")],
+        ["Comments", data.comments || "No additional comments"],
+        ["Photos", photoNames.length ? photoNames.join("\n") : "No photos uploaded"]
     ];
 
     document.getElementById("reviewContent").innerHTML = rows.map(([label, value]) => `
-      <div class="review-item">
-        <div class="review-label">${escapeHtml(label)}</div>
-        <div class="review-value">${escapeHtml(value)}</div>
-      </div>
+        <div class="review-item">
+            <div class="review-label">${escapeHtml(label)}</div>
+            <div class="review-value">${escapeHtml(value)}</div>
+        </div>
     `).join("");
 
     document.getElementById("progressBar").style.width = "100%";
     showPage("reviewPage");
-  }
+}
 
   function editForm() {
     showPage("questionPage");
@@ -654,12 +696,30 @@ async function submitForm() {
     showPage("welcomePage");
   }
 
-  document.getElementById("photos").addEventListener("change", function () {
-    const files = [...this.files];
+  function updatePhotoList() {
+    const cameraFiles = [...document.getElementById("cameraPhoto").files];
+    const uploadedFiles = [...document.getElementById("photos").files];
+
+    const allFiles = [
+        ...cameraFiles,
+        ...uploadedFiles
+    ];
+
     document.getElementById("fileList").textContent =
-      files.length === 0
-        ? "No photos selected."
-        : `${files.length} photo${files.length === 1 ? "" : "s"} selected: ${files.map(f => f.name).join(", ")}`;
+        allFiles.length === 0
+            ? "No photos selected."
+            : `${allFiles.length} photo${allFiles.length === 1 ? "" : "s"} selected: ${
+                allFiles.map(file => file.name).join(", ")
+            }`;
+}
+
+document
+    .getElementById("cameraPhoto")
+    .addEventListener("change", updatePhotoList);
+
+document
+    .getElementById("photos")
+    .addEventListener("change", updatePhotoList);
   });
 
   formatToday();
